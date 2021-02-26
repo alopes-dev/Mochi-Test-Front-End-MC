@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "babel-plugin-inline-react-svg": "^2.0.1",
     "next": "10.0.7",
     "next-images": "^1.7.0",

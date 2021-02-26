@@ -1,8 +1,9 @@
 import Head from 'next/head'
 
-import { Container } from '@styles/pages/Home';
+import { Container } from '@styles/pages/Home'
+import SearchGithubUsers from '@components/search-github-users'
 
-const Home:React.FC = ()=> {
+const Home: React.FC = () => {
   return (
     <Container>
       <Head>
@@ -10,10 +11,10 @@ const Home:React.FC = ()=> {
       </Head>
 
       <main>
-        <h1> Mochi Front-End Test</h1>
+        <SearchGithubUsers />
       </main>
     </Container>
   )
 }
 
-export default Home;
+export default Home

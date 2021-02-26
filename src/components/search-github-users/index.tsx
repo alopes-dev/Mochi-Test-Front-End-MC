@@ -14,19 +14,45 @@ const SearchGithubUsers: React.FC = () => {
 
     if (!value) return
     setLoading(true)
-    await fetchUsers(value)
+    await fetchGitHubUser(value)
   }
 
-  const fetchUsers = async (username: string): Promise<Array<usersType>> => {
+  const fetchGitHubUser =  async (username:string):Promise<usersType> =>{
     try {
-      const { data } = await api.get(`users/${username}`)
-      console.log(data)
+      const { data } = (await api.get(`users/${username}`))
+
+      const user = data
+      const repos = await fetchGitHubUserRepos(`users/${username}/repos`);
+
+      return user
+    } catch (error) {
+      return error
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchGitHubUserRepos = async (uri: string): Promise<Array<usersType>> => {
+    try {
+      const { data } = (await api.get(`${uri}`))
+
+      const contributors = await Promise.all(data.map(async(item)=>{
+        console.log(`repos/${item.full_name}/contributors`)
+        return await fetchContributors(`repos/${item.full_name}/contributors`)
+      }))
+
+      console.log(contributors)
+
       return data
     } catch (error) {
       return error
     } finally {
       setLoading(false)
     }
+  }
+
+  const fetchContributors = async(uri:string)=>{
+    const { data } = (await api.get(`${uri}`))
   }
 
   return (
