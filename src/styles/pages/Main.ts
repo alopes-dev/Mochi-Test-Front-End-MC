@@ -13,32 +13,19 @@ export const Container = styled.div`
     color: ${props => props.theme.colors.primary};
     margin-top: 50px;
   }
-  h3 {
-    font-size: 30px;
+  svg{
+    font-size: 140px;
     color: ${props => props.theme.colors.text};
-    margin: 20px 0;
+    display: flex;
+    margin: 0 auto;
+    margin-top:50px;
   }
 
   p {
     margin-top: 24px;
     font-size: 23px;
     line-height: 32px;
-    width: 65%;
-    text-align: center;
-  }
-
-  @media (max-width: 768px) {
-    padding:0 25px;
-
-    h1 {
-      font-size: 30px;
-    }
-    h3 {
-      font-size: 26px;
-    }
-
-    p {
-      width: 95%;
-    }
+    width:65%;
+    text-align:center;
   }
 `

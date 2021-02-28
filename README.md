@@ -4,7 +4,9 @@
 
 ## ✋🏻 Prerequisites
 
+- [React.js](https://nextjs.org/)
 - [Next.js](https://nextjs.org/)
+- [TypeScript](https://nextjs.org/)
 
 ## Installation
 

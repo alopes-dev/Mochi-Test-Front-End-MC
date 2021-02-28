@@ -1,26 +1,21 @@
-import React, { InputHTMLAttributes } from 'react'
+import React, {  forwardRef, InputHTMLAttributes } from 'react'
 
 import { Label } from '@components/input/styles'
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement>{
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
-  type?: string
   color?: string
-  placeholder?: string
   icon?: React.ReactNode | React.Component
 }
 
-export const Input: React.FC<InputProps> = ({
-  name,
-  type = 'text',
-  color = '#7159c1',
-  icon,
-  ...rest
-}) => {
+const Input = (props:InputProps, ref:any) => {
+  const { name, type = 'text', color = '#7159c1', icon, ...rest } = props
   return (
     <Label htmlFor={name} color={color} icon={icon}>
-      <input name={name} type={type} aria-label={name} {...rest} />
-      {icon && icon}
+      <input ref={ref} name={name} type={type} aria-label={name} {...rest} />
+      <span> {icon && icon}</span>
     </Label>
   )
 }
+
+export default forwardRef(Input)

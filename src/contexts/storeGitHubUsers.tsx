@@ -1,31 +1,188 @@
-import React, { createContext, useState, useContext, useMemo } from 'react'
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useMemo,
+  useCallback
+} from 'react'
+
+import api from '@services/api'
+import { usersType } from '@components/types'
+import {
+  GitHubUsersUriQuery,
+  GitHubGetOrgsMembersUriQuery
+} from '@components/utils/urls'
+import { toast } from 'react-toastify'
 
 interface StoreGitHubUsersContextType {
   users: Array<usersType>
+  orgs: Array<usersType>
+  loading: boolean
+  orgsLimit: number
+  usersLimit: number
+  setLoading: Function
+  handleLimit: Function
+  fetchGitHubOrgs: Function
+  fetchGitHubUsers: Function
 }
 
-export interface usersType {
-  id: string
-  login: string
-  avatar_url: string
-  name: string
-  contributors?: number
-  people?: number
-}
-
-const StoreGitHubUsersContext = createContext<
+export const StoreGitHubUsersContext = createContext<
   StoreGitHubUsersContextType | undefined
 >(undefined)
 
 export const StoreGitHubUsersProvider = ({ children }) => {
-  const [users, setUsers] = useState<Array<usersType>>()
+  const [status, setStatus] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [orgsLimit, setOrgsLimit] = useState(5)
+  const [usersLimit, setUsersLimit] = useState(5)
+  const [orgs, setOrgs] = useState<Array<usersType>>([])
+  const [users, setUsers] = useState<Array<usersType>>([])
+
+  const fetchGitHubUsers = async (username: string) => {
+    setLoading(true)
+    try {
+      const { data } = await api.get(`${GitHubUsersUriQuery}${username}`)
+
+      if (!data) throw Error('No users found...')
+
+      const { total_count, items } = data
+
+      if (total_count === 0) setStatus(total_count)
+
+      const usersInfo = await Promise.all(gitHubGetUserInfo(items))
+
+      const users = usersInfo.map(
+        ({
+          id,
+          login,
+          avatar_url,
+          name,
+          organizations_url,
+          repos_url
+        }): usersType => ({
+          id,
+          login,
+          avatar_url,
+          name,
+          organizations_url,
+          repos_url
+        })
+      )
+      setUsers(users)
+    } catch (error) {
+      toast.error(
+        `${error.message} check your intenet connection and try again..`
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchGitHubOrgs = async (username: string) => {
+    try {
+      const { data } = await api.get(
+        `${GitHubUsersUriQuery}${username}+type:org`
+      )
+
+      if (!data) throw Error('No Orgs found...')
+
+      const { total_count, items } = data
+
+      if (total_count === 0) setStatus(total_count)
+
+      const usersInfo = await Promise.all(gitHubGetUserInfo(items))
+
+      const orgsWithMembers = await Promise.all(gitHubGetOrgsMembers(usersInfo))
+
+      const orgs = orgsWithMembers.map(
+        ({
+          id,
+          login,
+          avatar_url,
+          total_count,
+          organizations_url,
+          repos_url
+        }): usersType => ({
+          id,
+          login,
+          total_count,
+          avatar_url,
+          organizations_url,
+          repos_url
+        })
+      )
+
+      setOrgs(orgs)
+    } catch (error) {
+      toast.error(
+        `${error.message} check your intenet connection and try again..`
+      )
+      return error
+    }
+  }
+
+  const gitHubGetUserInfo = (usersResponse: Array<usersType>) => {
+    return usersResponse.map(async item => {
+      const { data } = await api.get(`users/${item.login}`)
+
+      if (!data) throw Error('No user found...')
+      const { name } = data
+      return {
+        ...item,
+        name
+      }
+    })
+  }
+
+  const gitHubGetOrgsMembers = (orgsResponse: Array<usersType>) => {
+    return orgsResponse.map(async item => {
+      const { data } = await api.get(
+        `${GitHubGetOrgsMembersUriQuery}${item.login}/members`
+      )
+      if (!data) throw Error('No members found...')
+
+      return {
+        ...item,
+        total_count: data.length
+      }
+    })
+  }
+
+  const handleLimit = useCallback(
+    (content: Array<usersType>, target: boolean) => {
+      let limit = 0
+      if (target) {
+        limit = usersLimit >= content.length ? 5 : content.length
+        setUsersLimit(limit)
+      } else {
+        limit = usersLimit >= content.length ? 5 : content.length
+        setOrgsLimit(limit)
+      }
+    },
+    [usersLimit, orgsLimit]
+  )
 
   const memorizedValue = useMemo(
     () => ({
       users,
-      setUsers
+      orgs,
+      setLoading,
+      fetchGitHubUsers,
+      fetchGitHubOrgs,
+      loading,
+      usersLimit,
+      orgsLimit,
+      handleLimit
     }),
-    [users, setUsers]
+    [
+      users,
+      orgsLimit,
+      usersLimit,
+      handleLimit,
+      fetchGitHubUsers,
+      fetchGitHubOrgs,
+      loading
+    ]
   )
 
   return (

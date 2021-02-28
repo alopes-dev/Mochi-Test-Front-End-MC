@@ -21,11 +21,11 @@ export const Output = styled.div`
   :first-of-type {
     margin-right: 1rem;
   }
-  span.showmore{
-    font-size:13px;
-    text-align:center;
-    margin-top:20px;
-    color:${props => props.theme.colors.primary};
+  span.showmore {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 20px;
+    color: ${props => props.theme.colors.primary};
     cursor: pointer;
   }
 `
@@ -34,31 +34,41 @@ export const UsersOrOrginazationList = styled.ul`
     list-style: none;
     display: flex;
     align-items: center;
-    border-top:.4px solid  #666;
-    padding:10px 0px;
-    color:${props => props.theme.colors.text};
-    :first-child{
-      border:0;
-      margin-top:10px;
-      font-size:12px;
-      display:flex;
-      justify-content:space-between;
-      span{
-        margin-left:0;
+    border-top: 0.4px solid #666;
+    padding: 10px 0px;
+    color: ${props => props.theme.colors.text};
+    :first-child {
+      border: 0;
+      margin-top: 10px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      span {
+        margin-left: 0;
       }
     }
-    :last-child{
-      border-bottom:.4px solid  #666;
+    :last-child {
+      border-bottom: 0.4px solid #666;
     }
-    span {
+    div.userInfo {
       display: flex;
-      margin-left: 20px;
       justify-content: space-between;
-    }
-    small {
-      float: right;
-      position: relative;
-      left: 25%;
+      width: 100%;
+
+      span {
+        display: flex;
+        margin-left: 20px;
+        justify-content: space-between;
+        flex-direction: column;
+        small {
+          color: #797373;
+          font-size: 10pt;
+        }
+      }
+      small {
+        float: right;
+        position: relative;
+      }
     }
   }
 `
@@ -73,4 +83,23 @@ export const Avatar = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50% !important;
+  img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50% !important;
+  }
+`
+export const NoResult = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+  flex-direction: column;
+  svg {
+    font-size: 88px;
+    color: #ccc;
+  }
+  h4 {
+    font-size: 18px;
+  }
 `
