@@ -27,6 +27,7 @@ export const Container = styled.div`
     justify-content: baseline;
     position: absolute;
     left: 50%;
+    color: ${props => props.theme.colors.primary};
     transform: translateX(-50%);
     svg{
       color: ${props => props.theme.colors.primary};
@@ -60,7 +61,6 @@ export const Container = styled.div`
     }
     a{
       width:80%;
-      color: ${props => props.theme.colors.primary};
       font-size:15px;
     }
   }

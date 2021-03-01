@@ -13,7 +13,6 @@ let resultUsers = []
 
 const mockSetUsers = jest.fn().mockImplementation(User => {
   resultUsers = [...User]
-
   return resultUsers
 })
 
