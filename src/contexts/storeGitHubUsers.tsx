@@ -45,7 +45,7 @@ export const StoreGitHubUsersProvider = ({ children }) => {
       const { data, status } = await api.get(
         `${GitHubUsersUriQuery}${username}`
       )
-      if (status !== 200) if (!data) throw Error('No users found...')
+     if (!data) throw Error('No users found...')
 
       const { total_count, items } = data
 
