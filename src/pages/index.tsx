@@ -1,6 +1,7 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faLink, faSearch } from '@fortawesome/free-solid-svg-icons'
 
 import { Container } from '@styles/pages/Main'
 
@@ -13,7 +14,13 @@ const Main: React.FC = () => {
 
       <main>
         <h1> Welcome to search a GitHub Users/Orgs</h1>
-        <FontAwesomeIcon icon={faSearch} />
+        <FontAwesomeIcon  icon={faSearch} />
+        <Link  href="/searchUsers">
+          <a>
+            <FontAwesomeIcon  icon={faLink} />
+            <span>Click here and search GitHube Users...</span>
+          </a>
+        </Link>
       </main>
     </Container>
   )

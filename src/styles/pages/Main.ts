@@ -21,6 +21,20 @@ export const Container = styled.div`
     margin-top:50px;
   }
 
+  a{
+    display:flex;
+    align-items: baseline;
+    justify-content: baseline;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    svg{
+      color: ${props => props.theme.colors.primary};
+      font-size: 14px;
+      margin-right:20px;
+    }
+  }
+
   p {
     margin-top: 24px;
     font-size: 23px;

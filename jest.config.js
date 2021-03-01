@@ -1,0 +1,31 @@
+module.exports = {
+  roots: ['<rootDir>'],
+  moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
+  testPathIgnorePatterns: ['<rootDir>[/\\\\](node_modules|.next)[/\\\\]'],
+  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$'],
+  transform: {
+    '^.+\\.(ts|tsx)$': 'babel-jest',
+  },
+  watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
+  moduleNameMapper: {
+    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/__test__/__mocks__/fileMock.js',
+
+    '@styles/(.*)$': '<rootDir>/src/styles/$1',
+    '@styles': '<rootDir>/src/styles',
+    '@components/(.*)$': '<rootDir>/src/components/$1',
+    '@components': '<rootDir>/src/components',
+    '@utils/(.*)$': '<rootDir>/src/components/utils/$1',
+    '@utils': '<rootDir>/src/components/utils',
+    "@src/(.*)$":'<rootDir>/src/$1',
+    "@src": '<rootDir>/src',
+    "@pages/(.*)$": '<rootDir>/src/components/pages/$1',
+    "@pages": '<rootDir>/src/components/pages',
+    "@services/(.*)$": '<rootDir>/src/components/services/$1',
+    "@services":'<rootDir>/src/components/services',
+    "@contexts/(.*)$":'<rootDir>/src/components/contexts/$1',
+    "@contexts": '<rootDir>/src/components/contexts',
+  },
+  setupFilesAfterEnv: ['<rootDir>/.jest/setup.ts'],
+  moduleDirectories: ['node_modules', 'modules'],
+};
