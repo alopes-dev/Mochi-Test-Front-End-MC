@@ -90,9 +90,9 @@ export const StoreGitHubUsersProvider = ({ children }) => {
 
       if (total_count === 0) setStatus(total_count)
 
-      const usersInfo = await Promise.all(gitHubGetUserInfo(items))
+      // const usersInfo = await Promise.all(gitHubGetUserInfo(items))
 
-      const orgsWithMembers = await Promise.all(gitHubGetOrgsMembers(usersInfo))
+      const orgsWithMembers = await Promise.all(gitHubGetOrgsMembers(items))
 
       const orgs = orgsWithMembers.map(
         ({
@@ -124,7 +124,7 @@ export const StoreGitHubUsersProvider = ({ children }) => {
   const gitHubGetUserInfo = (usersResponse: Array<usersType>) => {
     return usersResponse.map(async item => {
       const { data } = await api.get(`users/${item.login}`)
-
+      console.log(data)
       if (!data) throw Error('No user found...')
       const { name } = data
       return {
