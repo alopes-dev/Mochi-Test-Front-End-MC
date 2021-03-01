@@ -1,9 +1,10 @@
 import axios from 'axios'
-
+console.log(`token ${process.env.REACT_APP_PERSONAL_ACCESS_TOKEN}`)
+console.log(`token ${process.env.NEXT_PUBLIC_PERSONAL_ACCESS_TOKEN}`)
 const api = axios.create({
   baseURL: 'https://api.github.com/',
   headers: {
-    Authorization: `token 8fd6490462e06a249d8ee743e9c59badf814b168`,
+    Authorization: `token ${process.env.NEXT_PUBLIC_PERSONAL_ACCESS_TOKEN}`,
   }
 })
 
