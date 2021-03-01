@@ -42,4 +42,26 @@ export const Container = styled.div`
     width:65%;
     text-align:center;
   }
+
+
+  @media (max-width: 768px) {
+    padding:0 25px;
+
+    h1 {
+      font-size: 30px;
+      text-align:center;
+    }
+    h3 {
+      font-size: 26px;
+    }
+
+    p {
+      width: 95%;
+    }
+    a{
+      width:80%;
+      color: ${props => props.theme.colors.primary};
+      font-size:15px;
+    }
+  }
 `

@@ -44,7 +44,7 @@ const UsersList: React.FC<propsType> = ({
 
   return (
     <OutputContainer>
-      <h4>
+      <h4 aria-label="title">
         {title} ({content.length})
       </h4>
       <Separator />

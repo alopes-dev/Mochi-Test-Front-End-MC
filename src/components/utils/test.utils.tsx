@@ -8,7 +8,6 @@ export const Wrapper: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <div id="__next">{children}</div>
-      <GlobalStyle />
     </ThemeProvider>
   )
 }
