@@ -13,6 +13,7 @@ import {
   GitHubGetOrgsMembersUriQuery
 } from '@components/utils/urls'
 import { toast } from 'react-toastify'
+import { ErrorREST } from '@utils/errorhandle'
 
 interface StoreGitHubUsersContextType {
   users: Array<usersType>
@@ -41,9 +42,10 @@ export const StoreGitHubUsersProvider = ({ children }) => {
   const fetchGitHubUsers = async (username: string) => {
     setLoading(true)
     try {
-      const { data } = await api.get(`${GitHubUsersUriQuery}${username}`)
-
-      if (!data) throw Error('No users found...')
+      const { data, status } = await api.get(
+        `${GitHubUsersUriQuery}${username}`
+      )
+      if (status !== 200) if (!data) throw Error('No users found...')
 
       const { total_count, items } = data
 
@@ -70,9 +72,8 @@ export const StoreGitHubUsersProvider = ({ children }) => {
       )
       setUsers(users)
     } catch (error) {
-      toast.error(
-        `${error.message} check your intenet connection and try again..`
-      )
+      setUsers([])
+      toast.error(`${new ErrorREST(error).response.message}`)
     } finally {
       setLoading(false)
     }
@@ -90,48 +91,52 @@ export const StoreGitHubUsersProvider = ({ children }) => {
 
       if (total_count === 0) setStatus(total_count)
 
-      // const usersInfo = await Promise.all(gitHubGetUserInfo(items))
-
       const orgsWithMembers = await Promise.all(gitHubGetOrgsMembers(items))
 
-      const orgs = orgsWithMembers.map(
+      const orgsInfo = await Promise.all(gitHubGetUserInfo(orgsWithMembers))
+
+      const orgs = orgsInfo.map(
         ({
           id,
           login,
           avatar_url,
           total_count,
           organizations_url,
-          repos_url
+          repos_url,
+          name
         }): usersType => ({
           id,
           login,
           total_count,
           avatar_url,
           organizations_url,
-          repos_url
+          repos_url,
+          name
         })
       )
 
       setOrgs(orgs)
     } catch (error) {
-      toast.error(
-        `${error.message} check your intenet connection and try again..`
-      )
-      return error
+      setOrgs([])
+      toast.error(`${new ErrorREST(error).response.message}`)
     }
   }
 
   const gitHubGetUserInfo = (usersResponse: Array<usersType>) => {
-    return usersResponse.map(async item => {
-      const { data } = await api.get(`users/${item.login}`)
-      console.log(data)
-      if (!data) throw Error('No user found...')
-      const { name } = data
-      return {
-        ...item,
-        name
-      }
-    })
+    try {
+      return usersResponse.map(async item => {
+        const { data } = await api.get(`users/${item.login}`)
+
+        if (!data) throw Error('No user found...')
+        const { name } = data
+        return {
+          ...item,
+          name
+        }
+      })
+    } catch (error) {
+      return error
+    }
   }
 
   const gitHubGetOrgsMembers = (orgsResponse: Array<usersType>) => {
