@@ -19,14 +19,17 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["./src/src/*"],
-      "@utils/*": ["./src/components/utils/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@services/*": ["./src/services/*"],
-      "@contexts/*": ["./src/contexts/*"],
-      "@components/*": ["./src/components/*"],
+      "@utils/*": ["./utils/*"],
+      "@pages/*": ["./client/pages/*"],
+      "@styles/*": ["./client/styles/*"],
+      "@services/*": ["./client/services/*"],
+      "@contexts/*": ["./client/contexts/*"],
+      "@components/*": ["./client/components/*"],
+      "@client/*": ["./client/*"],
+      "@constants/*": ["./constants/*"],
+      "@itypes/*": ["./types/*"],
     }
+
   },
   "include": [
     "next-env.d.ts",
